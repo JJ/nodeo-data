@@ -4,7 +4,7 @@ var nodeo = require('../lib/nodeo.js'),
 trap = require('../lib/trap.js');
 
 var l = 4,
-traps = 64;
+traps = 30;
 var population_size = 256;
 var a = 1, b = 2, z = l-1;
 var chromosome_size = l*traps;
