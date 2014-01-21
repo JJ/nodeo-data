@@ -19,16 +19,15 @@ if ( !conf ) {
 }
 
 log.push( conf );
-var chromosome_size = conf.l*conf.fitness.traps;
+var traps = conf.fitness.traps;
+var chromosome_size = conf.fitness.l*traps;
 
 var trapf = new trap.Trap( conf.fitness );
 
-console.log(trapf);
 var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 			    chromosome_size: chromosome_size,
 			    fitness_func: trapf } );
 
-console.log(eo);
 // Definitions
 app.get('/get/best', function(req, res){
 	    res.send({ chromosome : eo.population[0],
@@ -36,7 +35,6 @@ app.get('/get/best', function(req, res){
 	    log.push( { get: process.hrtime});
 });
 
-console.log( "Almost");
 log.push( { time: process.hrtime} );
 console.log( "Starting ");
 process.nextTick( generations );
@@ -49,15 +47,16 @@ function generations( ) {
     var generation_count = 0;
     do {
 	eo.generation();
-    } while ( (eo.fitness_of[eo.population[0]] < traps*b ) && ( generation_count++ < conf.generation_run));
-    console.log({ chromosome : eo.population[0],
-		  fitness : eo.fitness_of[eo.population[0]]});
-    if (generation_count > generation_run ) {
-	console.log( " Next " );
+    } while ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && ( generation_count++ < conf.generation_run));
+    if (generation_count > conf.generation_run ) {
+	 console.log({ chromosome : eo.population[0],
+		       fitness : eo.fitness_of[eo.population[0]]});
+	process.nextTick( generations );
     } else {
 	log.push( {time: process.hrtime} );
 	fs.writeFileSync(conf.output, log);
 	console.log("Finished\n");
+	process.exit();
 	
     }
 }

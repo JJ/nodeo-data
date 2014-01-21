@@ -1,11 +1,11 @@
 {  "port": 3000,
-   "generation_run": 10,
-   "population_size": 256,
+   "generation_run": 5,
+   "population_size": 512,
    "output": "test.json",
    "fitness": { "l": 4, 
 	      "a": 1, 
 	      "b": 2, 
 	      "z": 3,
-	      "traps": 30 }
+	      "traps": 40 }
 }
 
