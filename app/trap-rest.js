@@ -2,22 +2,28 @@
 
 var nodeo = require('../lib/nodeo.js'),
 trap = require('../lib/trap.js'),
-express = require('express');
+express = require('express'),
+fs= require('fs');
 
 var app=express();
 
+var conf_file = process.argv[2] || 'nodeo.json';
+
+var conf = fs.readFileSync( conf_file );
+
+if ( !conf ) {
+    throw "Problems with conf file";
+}
 var generation_run = 10;
-var l = 4,
 traps = 30;
 var population_size = 256;
-var a = 1, b = 2, z = l-1;
 var chromosome_size = l*traps;
 var population = [];
 var fitness_of = {};
 var tournament_size = 2;
 var pool_size = population_size;
 
-var trapf = new trap.Trap( { l: l, a: a, b: b, z: z } );
+var trapf = new trap.Trap( conf );
 
 var eo = new nodeo.Nodeo( { population_size: population_size,
 			    chromosome_size: chromosome_size,
