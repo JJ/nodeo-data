@@ -9,7 +9,7 @@ var app=express();
 
 var conf_file = process.argv[2] || 'nodeo.json';
 
-var conf = JSON.parse(fs.readFileSync( conf_file, { encoding: 'utf8'} ));
+var conf = JSON.parse(fs.readFileSync( conf_file, 'utf8' ));
 
 console.log(conf);
 var log = [];
@@ -60,4 +60,3 @@ function generations( ) {
 	
     }
 }
-
