@@ -11,21 +11,16 @@ var conf_file = process.argv[2] || 'nodeo.json';
 
 var conf = fs.readFileSync( conf_file );
 
+var log = [];
+
 if ( !conf ) {
     throw "Problems with conf file";
 }
-var generation_run = 10;
-traps = 30;
-var population_size = 256;
-var chromosome_size = l*traps;
-var population = [];
-var fitness_of = {};
-var tournament_size = 2;
-var pool_size = population_size;
+var chromosome_size = conf.l*conf.fitness.traps;
 
-var trapf = new trap.Trap( conf );
+var trapf = new trap.Trap( conf.fitness );
 
-var eo = new nodeo.Nodeo( { population_size: population_size,
+var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 			    chromosome_size: chromosome_size,
 			    fitness_func: trapf } );
 
@@ -36,14 +31,14 @@ app.get('/get/best', function(req, res){
 });
 
 process.nextTick( generations );
-app.listen( 3000 ) ;
-console.log( "Listening on 3000" );
+app.listen( conf.port ) ;
+console.log( "Listening on " +conf.port );
 
 function generations( ) {
     var generation_count = 0;
     do {
 	eo.generation();
-    } while ( (eo.fitness_of[eo.population[0]] < traps*b ) && ( generation_count++ < generation_run));
+    } while ( (eo.fitness_of[eo.population[0]] < traps*b ) && ( generation_count++ < conf.generation_run));
     console.log({ chromosome : eo.population[0],
 		  fitness : eo.fitness_of[eo.population[0]]});
     if (generation_count > generation_run ) {
