@@ -37,10 +37,9 @@ app.get('/get/best', function(req, res){
 
 log.push( { time: process.hrtime} );
 console.log( "Starting ");
-process.nextTick( generations );
 console.log( "Listening on " +conf.port );
 app.listen( conf.port ) ;
-
+generations();
 
 //------------------------------------------------------
 function generations( ) {
@@ -51,7 +50,7 @@ function generations( ) {
     if (generation_count > conf.generation_run ) {
 	 console.log({ chromosome : eo.population[0],
 		       fitness : eo.fitness_of[eo.population[0]]});
-	process.nextTick( generations );
+	setImmediate( generations );
     } else {
 	log.push( {time: process.hrtime} );
 	fs.writeFileSync(conf.output, log);
