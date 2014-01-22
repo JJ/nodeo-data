@@ -3,7 +3,8 @@
 var nodeo = require('../lib/nodeo.js'),
 trap = require('../lib/trap.js'),
 express = require('express'),
-fs= require('fs');
+fs= require('fs'),
+rest= require('restler');
 
 var app=express();
 
@@ -55,6 +56,13 @@ function generations( ) {
     do {
 	eo.generation();
     } while ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && ( generation_count++ < conf.generation_run));
+    if ( conf.peers ) {
+	var peer_url = conf.peers[ Math.floor(Math.random()*conf.peers.length )];
+	rest.get( peer_url+"/best" ).on('success', function(result) {
+	    console.log( result );
+	    eo.incorporate( result.chromosome );
+	});
+    }
     if (generation_count > conf.generation_run ) {
 	 console.log({ chromosome : eo.population[0],
 		       fitness : eo.fitness_of[eo.population[0]]});
