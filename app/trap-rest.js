@@ -37,10 +37,10 @@ app.get('/get/best', function(req, res){
 
 log.push( { time: process.hrtime} );
 console.log( "Starting ");
-process.nextTick( generations );
+// process.nextTick( generations );
 console.log( "Listening on " +conf.port );
 app.listen( conf.port ) ;
-
+generations();
 
 //------------------------------------------------------
 function generations( ) {
