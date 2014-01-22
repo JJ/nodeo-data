@@ -28,11 +28,19 @@ var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 			    chromosome_size: chromosome_size,
 			    fitness_func: trapf } );
 
-// Definitions
-app.get('/get/best', function(req, res){
+// API Definitions
+app.get('/best', function(req, res){
 	    res.send({ chromosome : eo.population[0],
 		       fitness : eo.fitness_of[eo.population[0]]});
 	    log.push( { get: process.hrtime()});
+});
+
+// API Definitions
+app.put('/one/:chromosome', function(req, res){
+    eo.incorporate( req.params.chromosome );
+    res.send({ chromosome : eo.population[0],
+	       fitness : eo.fitness_of[eo.population[0]]});
+    log.push( { put: process.hrtime()});
 });
 
 log.push( { start: process.hrtime() } );
