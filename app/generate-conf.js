@@ -16,14 +16,14 @@ for ( var i = 0; i < how_many_peers; i ++ )
     indices.push( i );
 
 var all_peers = indices.map( function( one ) {
-    return "http://localhost:"+(conf.port+one);
+    return "http://localhost:"+(parseInt(conf.port)+one);
 });
 
 console.log( all_peers);
 
 for (var i in indices ) {
-    var this_conf = conf;
-    this_conf.port = parseInt(this_conf.port) + i;
+    var this_conf = JSON.parse(JSON.stringify(conf)); // cheap clone
+    this_conf.port = (parseInt(this_conf.port) + parseInt(i));
     this_conf.population_size = total_population/how_many_peers;
     this_conf.peers = all_peers.slice(0);
     this_conf.peers.splice(i, 1);
