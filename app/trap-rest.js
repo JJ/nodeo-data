@@ -9,7 +9,7 @@ var app=express();
 
 var conf_file = process.argv[2] || 'nodeo.json';
 
-var conf = JSON.parse(fs.readFileSync( conf_file, { encoding: 'utf8'} ));
+var conf = JSON.parse(fs.readFileSync( conf_file, 'utf8' ));
 
 console.log(conf);
 var log = [];
@@ -32,12 +32,11 @@ var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 app.get('/get/best', function(req, res){
 	    res.send({ chromosome : eo.population[0],
 		       fitness : eo.fitness_of[eo.population[0]]});
-	    log.push( { get: process.hrtime});
+	    log.push( { get: process.hrtime()});
 });
 
-log.push( { time: process.hrtime} );
+log.push( { start: process.hrtime() } );
 console.log( "Starting ");
-// process.nextTick( generations );
 console.log( "Listening on " +conf.port );
 app.listen( conf.port ) ;
 generations();
@@ -51,13 +50,12 @@ function generations( ) {
     if (generation_count > conf.generation_run ) {
 	 console.log({ chromosome : eo.population[0],
 		       fitness : eo.fitness_of[eo.population[0]]});
-	process.nextTick( generations );
+	setImmediate( generations );
     } else {
-	log.push( {time: process.hrtime} );
-	fs.writeFileSync(conf.output, log);
+	log.push( {end: process.hrtime()} );
+	fs.writeFileSync(conf.output, JSON.stringify(log));
 	console.log("Finished\n");
 	process.exit();
 	
     }
 }
-
