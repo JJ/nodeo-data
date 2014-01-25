@@ -22,6 +22,7 @@ if ( !conf ) {
 log.push( conf );
 var traps = conf.fitness.traps;
 var chromosome_size = conf.fitness.l*traps;
+var total_generations = 0;
 
 var trapf = new trap.Trap( conf.fitness );
 
@@ -63,12 +64,19 @@ function generations( ) {
 	    eo.incorporate( result.chromosome );
 	});
     }
-    if (generation_count > conf.generation_run ) {
+    total_generations += generation_count;
+    if ( ( generation_count > conf.generation_run ) && ( total_generations < conf.max_generations )  ) {
 	 console.log({ chromosome : eo.population[0],
 		       fitness : eo.fitness_of[eo.population[0]]});
 	setImmediate( generations );
     } else {
-	log.push( {end: process.hrtime()} );
+	log.push( { chromosome : eo.population[0],
+		       fitness : eo.fitness_of[eo.population[0]]});
+	log.push( {end: { 
+		       time: process.hrtime(),
+		       generation: total_generations,
+		       best : { chromosome : eo.population[0],
+				fitness : eo.fitness_of[eo.population[0]]}}} );
 	fs.writeFileSync(conf.output, JSON.stringify(log));
 	console.log("Finished\n");
 	process.exit();

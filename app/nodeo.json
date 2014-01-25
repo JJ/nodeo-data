@@ -1,5 +1,6 @@
 {  "port": 3000,
    "generation_run": 20,
+   "max_generations": 10000,
    "population_size": 512,
    "output": "test.json",
    "fitness": { "l": 4, 
