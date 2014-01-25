@@ -1,0 +1,1 @@
+[{"port":3001,"generation_run":20,"fitness":{"l":4,"a":1,"b":2,"z":3,"traps":40},"population_size":256,"peers":["http://localhost:3000","http://localhost:3002","http://localhost:3003"],"output":"x:1.json"},{"start":[2615,313211929]},{"get":[2615,993911432]},{"get":[2615,994831910]},{"get":[2616,834291592]},{"get":[2616,983799363]},{"end":[2617,51901915]}]
