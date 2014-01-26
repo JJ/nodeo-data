@@ -32,14 +32,12 @@ for ( var i = 0; i < how_many; i++ ) {
     console.log( "Starting ");
     var generation_count=0;
      do {
-	eo.generation();
+	 eo.generation();
 	 generation_count++;
     } while ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && ( generation_count*conf.population_size < conf.max_evaluations));
-    log.push( { chromosome : eo.population[0],
-		fitness : eo.fitness_of[eo.population[0]]});
     log.push( {end: { 
 		   time: process.hrtime(),
-		   generation: total_generations,
+		   evaluations: generation_count*conf.population_size,
 		   best : { chromosome : eo.population[0],
 			    fitness : eo.fitness_of[eo.population[0]]}}} );
     fs.writeFileSync(conf.output, JSON.stringify(log));
