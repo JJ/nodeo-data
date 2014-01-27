@@ -1,0 +1,10 @@
+---
+- hosts: azure
+  sudo: yes
+  tasks:
+    - name: Install git
+      apt: pkg=git state=present
+    - name: Install nodejs well
+      apt: pkg=nodejs-legacy state=present
+    - name: Install npm
+      apt: pkg=npm state=present

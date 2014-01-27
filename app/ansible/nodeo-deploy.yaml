@@ -1,0 +1,8 @@
+---
+- hosts: azure
+  tasks:
+    - name: create dir
+      command: mkdir /home/jjmerelo/progs 
+      ignore_errors: yes
+    - name: deploy nodeo
+      action: git repo=https://github.com/JJ/nodeo.git dest=/home/jjmerelo/progs
