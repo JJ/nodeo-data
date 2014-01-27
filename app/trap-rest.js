@@ -10,10 +10,11 @@ var app=express();
 
 var conf_file = process.argv[2] || 'nodeo.json';
 var id = process.argv[3] || 0;
+var peers_max = process.argv[4] || 0;
 
 var conf = JSON.parse(fs.readFileSync( conf_file, 'utf8' ));
 
-console.log(conf);
+// console.log(conf);
 var log = [];
 
 if ( !conf ) {
@@ -48,8 +49,20 @@ app.put('/one/:chromosome', function(req, res){
 
 log.push( { start: process.hrtime() } );
 console.log( "Starting ");
-console.log( "Listening on " +conf.port );
-app.listen( conf.port ) ;
+app.listen( conf.port+id ) ;
+
+// generate peers
+
+if ( !conf.peers && peers_max ) {
+    conf.peers=[];
+    for ( var i = 0; i < peers_max; i ++ ) {
+	if ( i != id ) {
+	    var port = 3000+i; // hack to force number
+	    conf.peers.push( "http://localhost:"+port );
+	}
+	
+    }
+}
 
 // start running the GA
 generations();
@@ -69,8 +82,8 @@ function generations( ) {
     }
     total_generations += generation_count;
     if ( ( generation_count > conf.generation_run ) && ( total_generations*conf.population_size < conf.max_evaluations )  ) {
-	 console.log({ chromosome : eo.population[0],
-		       fitness : eo.fitness_of[eo.population[0]]});
+//	 console.log({ chromosome : eo.population[0],
+//		       fitness : eo.fitness_of[eo.population[0]]});
 	setImmediate( generations );
     } else {
 	log.push( {end: { 
@@ -78,7 +91,7 @@ function generations( ) {
 		       generation: total_generations,
 		       best : { chromosome : eo.population[0],
 				fitness : eo.fitness_of[eo.population[0]]}}} );
-	conf.output = conf.output_prefix+"-"+id+".json";
+	conf.output = conf.output_preffix+"-"+id+".json";
 	fs.writeFileSync(conf.output, JSON.stringify(log));
 	console.log("Finished\n");
 	process.exit();
