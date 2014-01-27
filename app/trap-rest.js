@@ -64,9 +64,8 @@ function generations( ) {
     if ( conf.peers ) {
 	var peer_url = conf.peers[ Math.floor(Math.random()*conf.peers.length )];
 	rest.get( peer_url+"/best" ).on('success', function(result) {
-	    console.log( result );
-	    eo.incorporate( result.chromosome );
-	});
+					    eo.incorporate( result.chromosome );
+					});
     }
     total_generations += generation_count;
     if ( ( generation_count > conf.generation_run ) && ( total_generations*conf.population_size < conf.max_evaluations )  ) {

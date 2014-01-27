@@ -27,15 +27,15 @@ my $prefix_files = shift || die "Tell me the files \n";
 
 my @files = glob $prefix_files."-*.dat";
 
-my $hits;
+my $hits=0;
 my @times;
 for my $f (@files ) {
   my $experiment = json_file_to_perl($f);
-  my $start_time = join(".",@{$experiment->[1]->{'start'}});
+  my $start_time = nanos(@{$experiment->[1]->{'start'}});
   my $last =$experiment->[@$experiment -1];
   if ( $last->{'end'}{'best'}{'fitness'} == $target_fitness ) {
     $hits ++; 
-    push @times, join(".",@{$last->{'end'}{'time'}}) - $start_time;
+    push @times, (nanos(@{$last->{'end'}{'time'}}) - $start_time)/1e6;
   }
 }
 
@@ -43,3 +43,6 @@ say "Success rate :", $hits/@files;
 say "Times: ", join(", ", @times);
 
 
+sub nanos {
+  return $_[0]*1e9+$_[1];
+}

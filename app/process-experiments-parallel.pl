@@ -35,9 +35,7 @@ for my $f (@files ) {
   $success = 0;
   my $experiment =  json_file_to_perl($f);
   my $start_time = nanos(@{$experiment->[1]->{'start'}}) ;
-  say "Start ", $start_time;
   my $last = $experiment->[@$experiment -1] ;
-  say "End ", nanos(@{$last->{'end'}{'time'}}), " D ",  nanos(@{$last->{'end'}{'time'}}) - $start_time;
   my $best_duration =(nanos(@{$last->{'end'}{'time'}}) - $start_time)/1e6;
   my $success;
   for my $i (2..$how_many) {
@@ -45,9 +43,7 @@ for my $f (@files ) {
     $other_file =~ s/-1-/-$i-/;
     $experiment= json_file_to_perl($other_file);
     $start_time = nanos(@{$experiment->[1]->{'start'}});
-    say "Start ", $start_time;
     $last= $experiment->[@$experiment -1];
-    say "End ", nanos(@{$last->{'end'}{'time'}}), " D ",  nanos(@{$last->{'end'}{'time'}}) - $start_time;
     my $this_duration = (nanos(@{$last->{'end'}{'time'}}) - $start_time)/1e6;
     if ( $this_duration < $best_duration ) {
       $best_duration = $this_duration;
