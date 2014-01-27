@@ -9,7 +9,7 @@ do
     do
 	id=$((j - 1))
 	echo "Starting $id"
-	node trap-rest.js $CONF $id $N & 
+	node trap-rest.js $CONF $id $N $i & 
 	PID[$j]=$!
     done
     for j in $(seq $N)

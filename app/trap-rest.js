@@ -49,8 +49,9 @@ app.put('/one/:chromosome', function(req, res){
 });
 
 log.push( { start: process.hrtime() } );
-console.log( "Starting ");
-app.listen( conf.port+id ) ;
+//console.log( "Starting on port");
+// console.log(3000+parseInt(id));
+app.listen( 3000+parseInt(id) ) ;
 
 // generate peers
 
@@ -77,7 +78,10 @@ function generations( ) {
     } while ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && ( generation_count++ < conf.generation_run));
     if ( conf.peers ) {
 	var peer_url = conf.peers[ Math.floor(Math.random()*conf.peers.length )];
+//	console.log(peer_url);
 	rest.get( peer_url+"/best" ).on('success', function(result) {
+//					    console.log('Incorporating ');
+//					    console.log(result.chromosome);
 					    eo.incorporate( result.chromosome );
 					});
     }
@@ -92,7 +96,8 @@ function generations( ) {
 		       generation: total_generations,
 		       best : { chromosome : eo.population[0],
 				fitness : eo.fitness_of[eo.population[0]]}}} );
-	conf.output = conf.output_preffix+"-"+id+"-"+series+".json";
+	var file_id = parseInt(id)+1;
+	conf.output = conf.output_preffix+"-"+file_id+"-"+series+".json";
 	fs.writeFileSync(conf.output, JSON.stringify(log));
 	console.log("Finished\n");
 	process.exit();
