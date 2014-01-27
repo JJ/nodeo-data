@@ -33,8 +33,10 @@ for my $f (@files ) {
   my $experiment = json_file_to_perl($f);
   my $start_time = join(".",@{$experiment->[1]->{'start'}});
   my $last =$experiment->[@$experiment -1];
-  $hits +=$last->{'end'}{'best'}{'fitness'} == $target_fitness; 
-  push @times, join(".",@{$last->{'end'}{'time'}}) - $start_time;
+  if ( $last->{'end'}{'best'}{'fitness'} == $target_fitness ) {
+    $hits ++; 
+    push @times, join(".",@{$last->{'end'}{'time'}}) - $start_time;
+  }
 }
 
 say "Success rate :", $hits/@files;
