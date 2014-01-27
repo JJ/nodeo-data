@@ -1,0 +1,13 @@
+{  "port": 3001,
+   "generation_run": 50,
+   "population_size": 256,
+   "max_evaluations": 2000000,
+   "output_prefix": "res-p256-g50-t30-2",
+   "peers" : ["http://localhost:3000"],		
+   "fitness": { "l": 4,		
+	      "a": 1, 		
+	      "b": 2, 		
+	      "z": 3,		
+	      "traps": 30 }
+}
+
