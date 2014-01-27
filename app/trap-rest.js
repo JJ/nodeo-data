@@ -11,6 +11,7 @@ var app=express();
 var conf_file = process.argv[2] || 'nodeo.json';
 var id = process.argv[3] || 0;
 var peers_max = process.argv[4] || 0;
+var series = process.argv[5] || 0;
 
 var conf = JSON.parse(fs.readFileSync( conf_file, 'utf8' ));
 
@@ -91,7 +92,7 @@ function generations( ) {
 		       generation: total_generations,
 		       best : { chromosome : eo.population[0],
 				fitness : eo.fitness_of[eo.population[0]]}}} );
-	conf.output = conf.output_preffix+"-"+id+".json";
+	conf.output = conf.output_preffix+"-"+id+"-"+series+".json";
 	fs.writeFileSync(conf.output, JSON.stringify(log));
 	console.log("Finished\n");
 	process.exit();
