@@ -1,5 +1,4 @@
-{  "port": 3000,
-   "generation_run": 20,
+{  "generation_run": 20,
    "population_size": 256,
    "max_evaluations": 2000000,
    "output_preffix": "res-p256-g20-t30",
