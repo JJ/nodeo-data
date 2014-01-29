@@ -9,7 +9,7 @@ var app=express();
 
 var conf_file = process.argv[2] || 'nodeo.json';
 var id = process.argv[3] || 0;
-var peers_max = process.argv[4] || 0;
+var pool_url = process.argv[4] || "http://localhost:5000";
 var series = process.argv[5] || 0;
 
 var conf = JSON.parse(fs.readFileSync( conf_file, 'utf8' ));
