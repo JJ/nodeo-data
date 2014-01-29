@@ -48,7 +48,7 @@ function generation() {
 	rest.put( pool_url+"/one/" + eo.population[0])
 	    .on('complete', function(result) {
 		    if ( result instanceof Error ) {
-			console.log("Error ", result.message );
+			console.log("Error PUT", result.message );
 		    } // else {
 		    // 	console.log( "Put", result );
 		    // }
@@ -57,7 +57,7 @@ function generation() {
 	    .on('complete', function(result) {
 //		    console.log('Getting');
 		    if ( result instanceof Error ) {
-			console.log("Error ", result.message );
+			console.log("Error GET", result.message );
 		    } else {
 //			console.log("Incorporation", result.chromosome );
 			eo.incorporate( result.chromosome );
