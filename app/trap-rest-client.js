@@ -5,8 +5,6 @@ trap = require('../lib/trap.js'),
 fs= require('fs'),
 rest= require('restler');
 
-var app=express();
-
 var conf_file = process.argv[2] || 'nodeo.json';
 var id = process.argv[3] || 0;
 var pool_url = process.argv[4] || "http://localhost:5000";
@@ -34,32 +32,50 @@ var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 
 log.push( { start: process.hrtime() } );
 console.log( "Starting ");
-
 // start running the GA
-generations();
-
 var generation_count = 0;
-do {
-    eo.generation();
+
+// Start loop
+generation();
+
+// ---------------------------------
+
+function generation() {
     generation_count++;
+    eo.generation();
     if ( generation_count % conf.generation_run === 0 ) {
-	rest.get( conf.pool_url+"/best" ).on('success', function(result) {
-						 eo.incorporate( result.chromosome );
-						 log.push( { new: result.chromosome} );
-					     });
-	rest.put( conf.pool_url+"/one", eo.population[0] );
+	console.log(generation_count);
+	rest.put( pool_url+"/one/" + eo.population[0])
+	    .on('complete', function(result) {
+		    if ( result instanceof Error ) {
+			console.log("Error ", result.message );
+		    } else {
+			console.log( "Put", result );
+		    }
+		});
+	rest.get( pool_url+"/random" )
+	    .on('complete', function(result) {
+		    console.log('Getting');
+		    if ( result instanceof Error ) {
+			console.log("Error ", result.message );
+		    } else {
+			console.log("Incorporation", result.chromosome );
+			eo.incorporate( result.chromosome );
+			log.push( { new: result.chromosome} );
+		    }
+		});
     }
-} while ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && (total_generations*conf.population_size < conf.max_evaluations ));
-
-log.push( {end: { 
-	       time: process.hrtime(),
-	       generation: total_generations,
-	       best : { chromosome : eo.population[0],
-			fitness : eo.fitness_of[eo.population[0]]}}} );
-var file_id = parseInt(id)+1;
-conf.output = conf.output_preffix+"-"+file_id+"-"+series+".json";
-fs.writeFileSync(conf.output, JSON.stringify(log));
-console.log("Finished\n");
-process.exit();
-
-
+    if ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && (generation_count*conf.population_size < conf.max_evaluations )) {
+	setImmediate(generation);
+    } else {
+	log.push( {end: { 
+		       time: process.hrtime(),
+		       generation: total_generations,
+		       best : { chromosome : eo.population[0],
+				fitness : eo.fitness_of[eo.population[0]]}}} );
+	var file_id = parseInt(id)+1;
+	conf.output = conf.output_preffix+"-"+file_id+"-"+series+".json";
+	fs.writeFileSync(conf.output, JSON.stringify(log));
+	console.log("Finished");
+    }
+}
