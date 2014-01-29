@@ -60,8 +60,10 @@ function generation() {
 			console.log("Error GET", result.message );
 		    } else {
 //			console.log("Incorporation", result.chromosome );
-			eo.incorporate( result.chromosome );
-			log.push( { new: result.chromosome} );
+			if ( result.chromosome) {
+			    eo.incorporate( result.chromosome );
+			    log.push( { new: result.chromosome} );
+			}
 		    }
 		});
     }

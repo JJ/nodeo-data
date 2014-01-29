@@ -1,0 +1,11 @@
+{   "generation_run": 40,
+   "population_size": 64,
+   "max_evaluations": 2000000,
+   "output_preffix": "res-p64-g40-t30-p",
+   "fitness": { "l": 4,		
+	      "a": 1, 		
+	      "b": 2, 		
+	      "z": 3,		
+	      "traps": 30 }
+}
+
