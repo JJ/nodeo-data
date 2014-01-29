@@ -7,8 +7,8 @@ rest= require('restler');
 
 var conf_file = process.argv[2] || 'nodeo.json';
 var id = process.argv[3] || 0;
-var pool_url = process.argv[4] || "http://localhost:5000";
-var series = process.argv[5] || 0;
+var series = process.argv[4] || 0;
+var pool_url = process.argv[5] || "http://localhost:5000";
 
 var conf = JSON.parse(fs.readFileSync( conf_file, 'utf8' ));
 
@@ -44,22 +44,22 @@ function generation() {
     generation_count++;
     eo.generation();
     if ( generation_count % conf.generation_run === 0 ) {
-	console.log(generation_count);
+//	console.log(generation_count);
 	rest.put( pool_url+"/one/" + eo.population[0])
 	    .on('complete', function(result) {
 		    if ( result instanceof Error ) {
 			console.log("Error ", result.message );
-		    } else {
-			console.log( "Put", result );
-		    }
+		    } // else {
+		    // 	console.log( "Put", result );
+		    // }
 		});
 	rest.get( pool_url+"/random" )
 	    .on('complete', function(result) {
-		    console.log('Getting');
+//		    console.log('Getting');
 		    if ( result instanceof Error ) {
 			console.log("Error ", result.message );
 		    } else {
-			console.log("Incorporation", result.chromosome );
+//			console.log("Incorporation", result.chromosome );
 			eo.incorporate( result.chromosome );
 			log.push( { new: result.chromosome} );
 		    }

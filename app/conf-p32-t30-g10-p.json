@@ -1,0 +1,12 @@
+{  "port": 3000,
+   "generation_run": 10,
+   "population_size": 32,
+   "max_evaluations": 2000000,
+   "output_preffix": "res-p32-g10-t30-p",
+   "fitness": { "l": 4,		
+	      "a": 1, 		
+	      "b": 2, 		
+	      "z": 3,		
+	      "traps": 30 }
+}
+
