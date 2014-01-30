@@ -2,7 +2,6 @@
 
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
-
 var nodeo = require('../../lib/nodeo.js'),
 trap = require('../../lib/trap.js');
 
@@ -52,22 +51,28 @@ console.log( "Starting ");
             };
 
 var generation_count=0;
-do {
-    eo.generation();
-    generation_count++;
-    fitness_data.data.labels.push(generation_count);
-    fitness_data.datasets[0].data.push(eo.fitness_of[eo.population[0]]);
-     this_chart.Line(fitness_data);
-} while ( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) && ( generation_count*conf.population_size < conf.max_evaluations));
 
-log.push( {end: { 
-	       evaluations: generation_count*conf.population_size,
-	       best : { chromosome : eo.population[0],
-			fitness : eo.fitness_of[eo.population[0]]}}} );
-console.log( "Finished ", log );
-console.log(  eo.population[0] );
-alert('Finished');
-
+(function do_ea() {
+     eo.generation();
+     generation_count++;
+     if ( (generation_count % 100 === 0) ) {
+	 console.log(generation_count);
+	 fitness_data.labels.push(generation_count);
+	 fitness_data.datasets[0].data.push(eo.fitness_of[eo.population[0]]);
+	 this_chart.Line(fitness_data);
+     }
+     if( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) 
+	 && ( generation_count*conf.population_size < conf.max_evaluations)) {
+	 setTimeout(do_ea, 5);
+     } else {
+	 log.push( {end: { 
+			evaluations: generation_count*conf.population_size,
+			best : { chromosome : eo.population[0],
+				 fitness : eo.fitness_of[eo.population[0]]}}} );
+	 console.log( "Finished ", log );
+	 console.log(  eo.population[0] );
+     }
+})();
 
 },{"../../lib/nodeo.js":4,"../../lib/trap.js":5}],2:[function(require,module,exports){
 /**
