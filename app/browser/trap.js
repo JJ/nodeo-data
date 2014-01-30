@@ -24,7 +24,6 @@ var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 				chromosome_size: chromosome_size,
 				fitness_func: trapf } );
 
-log.push( { start: process.hrtime() } );
 console.log( "Starting ");
 var generation_count=0;
 do {
