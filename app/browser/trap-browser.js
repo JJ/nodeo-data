@@ -2,77 +2,77 @@
 // Thanks to andreypopp for his help making this work.
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
-var nodeo = require('../../lib/nodeo.js'),
-trap = require('../../lib/trap.js');
-
-// get line chart canvas
-var buyers = document.getElementById('fitness').getContext('2d');
-
-// draw line chart
-var this_chart = new Chart(buyers);
-
-// GA conf
-var conf = {  "max_evaluations": 1000000,
-	      "population_size": 512,
-	      "fitness": { "l": 4, 
-			   "a": 1, 
-			   "b": 2, 
-			   "z": 3,
-			   "traps": 40 }
-	   };
-
-var traps = conf.fitness.traps;
-var chromosome_size = conf.fitness.l*traps;
-var log = [];
-log.push( conf );
-var total_generations = 0;
-
-var trapf = new trap.Trap( conf.fitness );
-
-var eo = new nodeo.Nodeo( { population_size: conf.population_size,
+    var nodeo = require('../../lib/nodeo.js'),
+    trap = require('../../lib/trap.js');
+    
+    // get line chart canvas
+    var buyers = document.getElementById('fitness').getContext('2d');
+    
+    // draw line chart
+    var this_chart = new Chart(buyers);
+    
+    // GA conf
+    var conf = {  "max_evaluations": 1000000,
+		  "population_size": 512,
+		  "fitness": { "l": 4, 
+			       "a": 1, 
+			       "b": 2, 
+			       "z": 3,
+			       "traps": 40 }
+	       };
+    
+    var traps = conf.fitness.traps;
+    var chromosome_size = conf.fitness.l*traps;
+    var log = [];
+    log.push( conf );
+    var total_generations = 0;
+    
+    var trapf = new trap.Trap( conf.fitness );
+    
+    var eo = new nodeo.Nodeo( { population_size: conf.population_size,
 				chromosome_size: chromosome_size,
 				fitness_func: trapf } );
-
-console.log( "Starting ");
-
-// Chart data
-
- var fitness_data = {
-                labels : [],
-                datasets : [
-                {
-                    fillColor : "rgba(172,194,132,0.4)",
-                    strokeColor : "#ACC26D",
-                    pointColor : "#fff",
-                    pointStrokeColor : "#9DB86D",
-                    data : []
-                }
-            ]
-            };
-
-var generation_count=0;
-
-(function do_ea() {
-     eo.generation();
-     generation_count++;
-     if ( (generation_count % 100 === 0) ) {
-	 console.log(generation_count);
-	 fitness_data.labels.push(generation_count);
-	 fitness_data.datasets[0].data.push(eo.fitness_of[eo.population[0]]);
-	 this_chart.Line(fitness_data);
-     }
-     if( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) 
-	 && ( generation_count*conf.population_size < conf.max_evaluations)) {
-	 setTimeout(do_ea, 5);
-     } else {
-	 log.push( {end: { 
-			evaluations: generation_count*conf.population_size,
-			best : { chromosome : eo.population[0],
-				 fitness : eo.fitness_of[eo.population[0]]}}} );
-	 console.log( "Finished ", log );
-	 console.log(  eo.population[0] );
-     }
-})();
+    
+    console.log( "Starting ");
+    
+    // Chart data
+    
+    var fitness_data = {
+        labels : [],
+        datasets : [
+            {
+                fillColor : "rgba(172,194,132,0.4)",
+                strokeColor : "#ACC26D",
+                pointColor : "#fff",
+                pointStrokeColor : "#9DB86D",
+                data : []
+            }
+        ]
+    };
+    
+    var generation_count=0;
+    
+    (function do_ea() {
+	eo.generation();
+	generation_count++;
+	if ( (generation_count % 100 === 0) ) {
+	    console.log(generation_count);
+	    fitness_data.labels.push(generation_count);
+	    fitness_data.datasets[0].data.push(eo.fitness_of[eo.population[0]]);
+	    this_chart.Line(fitness_data);
+	}
+	if( (eo.fitness_of[eo.population[0]] < traps*conf.fitness.b ) 
+	    && ( generation_count*conf.population_size < conf.max_evaluations)) {
+	    setTimeout(do_ea, 5);
+	} else {
+	    log.push( {end: { 
+		evaluations: generation_count*conf.population_size,
+		best : { chromosome : eo.population[0],
+			 fitness : eo.fitness_of[eo.population[0]]}}} );
+	    console.log( "Finished ", log );
+	    console.log(  eo.population[0] );
+	}
+    })();
 
 },{"../../lib/nodeo.js":4,"../../lib/trap.js":5}],2:[function(require,module,exports){
 /**
@@ -87,18 +87,18 @@ var generation_count=0;
 /*jshint -W065 */
 /*jshint smarttabs:true */
 
-var Utils = exports;
-
-// Create a random chromosome
-Utils.random= function (length){
-    var chromosome = '';
-    for ( var i = 0; i < length; i++ ){
-	chromosome = chromosome + ((Math.random() >0.5)? "1": "0") ;
-    }
-    return chromosome;
-};
-
-// Computes maxOnes fitness
+    var Utils = exports;
+    
+    // Create a random chromosome
+    Utils.random= function (length){
+	var chromosome = '';
+	for ( var i = 0; i < length; i++ ){
+	    chromosome = chromosome + ((Math.random() >0.5)? "1": "0") ;
+	}
+	return chromosome;
+    };
+    
+    // Computes maxOnes fitness
 Utils.max_ones = function (chromosome){
     var ones = 0;
     console.log( "MO " + chromosome);
