@@ -38,7 +38,7 @@ for my $f (@files ) {
   my $last = $experiment->[@$experiment -1] ;
   my $best_duration =(nanos(@{$last->{'end'}{'time'}}) - $start_time)/1e6;
   my $success;
-  for my $i (2..$how_many) {
+  for my $i (1..$how_many) {
     my $other_file =  $f;
     $other_file =~ s/-1-/-$i-/;
     $experiment= json_file_to_perl($other_file);

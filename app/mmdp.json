@@ -1,0 +1,8 @@
+{  "port": 3000,
+   "generation_run": 20,
+   "max_evaluations": 1000000,
+   "population_size": 512,
+   "output_preffix": "test-mmdp",
+   "fitness": { "blocks": 20 }
+}
+
