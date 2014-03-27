@@ -25,6 +25,7 @@ if ( !conf ) {
 log.push( conf );
 var blocks = conf.fitness.blocks;
 var chromosome_size = 6*blocks;
+var migration_method = conf.migration_method || '/random';
 var total_generations = 0;
 
 var mmdpf = new mmdp.MMDP( );
@@ -91,7 +92,7 @@ function generations( ) {
     if ( conf.peers ) {
 	var peer_url = conf.peers[ Math.floor(Math.random()*conf.peers.length )];
 //	console.log(peer_url);
-	rest.get( peer_url+"/random" ).on('success', function(result) {
+	rest.get( peer_url+migration_method ).on('success', function(result) {
 //					    console.log('Incorporating ');
 //					    console.log(result.chromosome);
 					    eo.incorporate( result.chromosome );

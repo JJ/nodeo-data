@@ -2,8 +2,8 @@
    "generation_run": 20,
    "max_evaluations": 1000000,
    "population_size": 512,
-   "output_preffix": "test-mmdp",
+   "output_preffix": "res.best.mmdp-20-512",
    "fitness": { "blocks": 20 },
-   "migration_method": "/best"
+   "migration_method" : "/best"
 }
 
