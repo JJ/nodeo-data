@@ -14,9 +14,7 @@ var rr = function (chromosome) {
     for (var i = 0; i < chromosome.length; i+=4 ) {
 	var chunk = chromosome.substr(i, 4);
 	var ones = (chunk.match(/1/g) || []).length;
-	if ( ones == 0 || ones == 4 ) {
-	    fitness++;
-	}
+	fitness += ( ones == 0 || ones == 4 ); 
     }
     return fitness;
 };
